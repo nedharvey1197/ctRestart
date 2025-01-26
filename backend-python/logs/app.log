@@ -1,0 +1,125 @@
+2025-01-23 16:58:34,352 - clinical_trials - INFO - Connecting to database...
+2025-01-23 16:58:34,367 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:02:16,945 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:02:16,947 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:02:17,711 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:02:17,724 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:08:28,264 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:08:28,277 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:08:29,327 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:08:29,355 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:08:37,273 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:08:37,276 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:08:37,969 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:08:37,978 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:08:51,716 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:08:51,738 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:08:54,775 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:08:54,776 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:08:54,812 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:08:54,813 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:08:55,585 - clinical_trials - INFO - Logging setup complete
+2025-01-23 17:08:55,594 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:08:55,601 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:08:55,711 - clinical_trials - INFO - Logging setup complete
+2025-01-23 17:08:55,720 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:08:55,729 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:09:05,452 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:09:05,453 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:09:05,454 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 404 Duration: 0.00s
+2025-01-23 17:09:05,455 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 404 Duration: 0.00s
+2025-01-23 17:09:51,854 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:09:51,855 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:10:24,660 - clinical_trials - INFO - Logging setup complete
+2025-01-23 17:10:24,669 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:10:24,681 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:10:35,911 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:10:35,913 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:10:36,801 - clinical_trials - INFO - Logging setup complete
+2025-01-23 17:10:36,810 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:10:36,822 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:17:22,980 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:17:22,983 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 404 Duration: 0.00s
+2025-01-23 17:18:10,771 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:18:10,772 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:18:10,773 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 404 Duration: 0.00s
+2025-01-23 17:18:10,773 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 404 Duration: 0.00s
+2025-01-23 17:22:58,873 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:22:58,907 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:29:11,061 - clinical_trials - INFO - Logging setup complete
+2025-01-23 17:29:11,071 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:29:11,089 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:29:11,092 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:29:11,092 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:29:11,115 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 200 Duration: 0.02s
+2025-01-23 17:29:11,115 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 200 Duration: 0.02s
+2025-01-23 17:29:36,658 - clinical_trials - INFO - >>> Starting POST request to /api/companies
+2025-01-23 17:29:36,658 - clinical_trials - INFO - Request body: {
+  "companyName": "Moderna",
+  "companyWebsite": "https://www.modernatx.com",
+  "companySize": "",
+  "therapeuticAreas": [],
+  "headquarters": "",
+  "contactEmail": "test@moderna.com"
+}
+2025-01-23 17:33:07,625 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:33:07,753 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:36:07,764 - clinical_trials - INFO - Logging setup complete
+2025-01-23 17:36:07,773 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:36:07,786 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:36:14,528 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:36:14,585 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:36:14,842 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 200 Duration: 0.32s
+2025-01-23 17:36:14,846 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 200 Duration: 0.26s
+2025-01-23 17:36:28,793 - clinical_trials - INFO - >>> Starting POST request to /api/companies
+2025-01-23 17:36:28,794 - clinical_trials - INFO - Request body: {
+  "companyName": "Moderna",
+  "companyWebsite": "https://www.modernatx.com",
+  "companySize": "Medium (50-250 employees)",
+  "therapeuticAreas": [
+    "Cardiology"
+  ],
+  "headquarters": "california",
+  "contactEmail": "test@moderna.com"
+}
+2025-01-23 17:44:18,285 - clinical_trials - INFO - Logging setup complete
+2025-01-23 17:44:18,294 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:44:18,310 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:44:25,540 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:44:25,542 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:44:25,551 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 200 Duration: 0.01s
+2025-01-23 17:44:25,554 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 200 Duration: 0.01s
+2025-01-23 17:44:29,912 - clinical_trials - INFO - >>> Starting POST request to /api/companies
+2025-01-23 17:44:29,912 - clinical_trials - INFO - Request body: {
+  "companyName": "Moderna",
+  "companyWebsite": "https://www.modernatx.com",
+  "companySize": "",
+  "therapeuticAreas": [],
+  "headquarters": "",
+  "contactEmail": "test@moderna.com"
+}
+2025-01-23 17:49:00,971 - clinical_trials - INFO - Logging setup complete
+2025-01-23 17:49:00,981 - clinical_trials - INFO - Connecting to database...
+2025-01-23 17:49:01,067 - clinical_trials - INFO - Successfully connected to MongoDB
+2025-01-23 17:49:11,126 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:49:11,129 - clinical_trials - INFO - Closing Redis connection...
+2025-01-23 17:49:11,877 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:49:11,877 - clinical_trials - INFO - >>> Starting GET request to /api/companies/current
+2025-01-23 17:49:11,890 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 200 Duration: 0.01s
+2025-01-23 17:49:11,892 - clinical_trials - INFO - <<< Completed GET /api/companies/current Status: 200 Duration: 0.02s
+2025-01-23 17:49:24,502 - clinical_trials - INFO - >>> Starting POST request to /api/companies
+2025-01-23 17:49:24,502 - clinical_trials - INFO - Request body: {
+  "companyName": "Moderna",
+  "companyWebsite": "https://www.modernatx.com",
+  "companySize": "",
+  "therapeuticAreas": [
+    "Oncology",
+    "Cardiology",
+    "Neurology"
+  ],
+  "headquarters": "",
+  "contactEmail": "test@moderna.com"
+}
+2025-01-23 17:55:14,111 - clinical_trials - INFO - <<< Completed POST /api/companies Status: 400 Duration: 349.60s
+2025-01-23 17:55:14,247 - clinical_trials - INFO - Closing database connection...
+2025-01-23 17:55:14,417 - clinical_trials - INFO - Closing Redis connection...

@@ -1,0 +1,164 @@
+{
+  "node_labels": {
+    "Study": {
+      "properties": {
+        "id": "string",
+        "name": "string",
+        "phase": "string",
+        "status": "string",
+        "last_updated": "datetime"
+      },
+      "constraints": ["id"]
+    },
+    "Protocol": {
+      "properties": {
+        "id": "string",
+        "version": "string",
+        "status": "string",
+        "type": "string"
+      },
+      "constraints": ["id"]
+    },
+    "StudyArm": {
+      "properties": {
+        "id": "string",
+        "name": "string",
+        "intervention_type": "string"
+      },
+      "constraints": ["id"]
+    },
+    "EventGroup": {
+      "properties": {
+        "id": "string",
+        "name": "string",
+        "type": "string",
+        "criteria": "string"
+      },
+      "constraints": ["id"]
+    },
+    "OutcomeGroup": {
+      "properties": {
+        "id": "string",
+        "name": "string",
+        "metrics": "string"
+      },
+      "constraints": ["id"]
+    },
+    "Condition": {
+      "properties": {
+        "id": "string",
+        "name": "string",
+        "icd_code": "string"
+      },
+      "constraints": ["id"]
+    },
+    "Intervention": {
+      "properties": {
+        "id": "string",
+        "name": "string",
+        "type": "string",
+        "mechanism": "string"
+      },
+      "constraints": ["id"]
+    },
+    "Biomarker": {
+      "properties": {
+        "id": "string",
+        "name": "string",
+        "measurement_type": "string"
+      },
+      "constraints": ["id"]
+    },
+    "AdverseEvent": {
+      "properties": {
+        "id": "string",
+        "type": "string",
+        "severity": "string",
+        "causality": "string"
+      },
+      "constraints": ["id"]
+    },
+    "PatientPopulation": {
+      "properties": {
+        "id": "string",
+        "characteristics": "string",
+        "size": "integer"
+      },
+      "constraints": ["id"]
+    },
+    "MolecularTarget": {
+      "properties": {
+        "id": "string",
+  	"interaction_type": "string",
+        "binding_site": "string",
+        "molecular_weight": "float",
+        "structure_type": "string",
+        "cellular_location": "string",
+        "binding_affinity": "float",
+        "pathway": "string",
+        "mechanism": "string",
+        "confidence": "float"
+      },
+      "constraints": ["id"]
+    },
+    "PopulationBiomarker": {
+      "properties": {
+        "id": "string",
+        "type": "string",
+	"assay_method": "string",
+        "detection_limit": "float",
+        "reference_range": {
+          "lower": "float",
+          "upper": "float",
+          "unit": "string"
+        },
+        "clinical_significance": "string",
+        "measurement": "string",
+        "significance": "float",
+        "temporal_validity": "datetime"
+      },
+      "constraints": ["id"]
+    }
+  },
+  "relationships": {
+    "USES_INTERVATION": {
+      "source": ["Study"],
+      "target": ["Intervention"],
+      "properties": {
+        "start_date": "datetime",
+        "end_date": "datetime"
+      }
+    },
+    "TARGETS_CONDITION": {
+      "source": ["Study"],
+      "target": ["Condition"],
+      "properties": {
+        "primary": "boolean"
+      }
+    },
+    "ENROLLS_POPULATION": {
+      "source": ["Study"],
+      "target": ["PatientPopulation"],
+      "properties": {
+        "target_size": "integer",
+        "actual_size": "integer"
+      }
+    },
+    "AFFECTS_TARGET": {
+      "source": ["Intervention"],
+      "target": ["MolecularTarget"],
+      "properties": {
+        "mechanism": "string",
+        "strength": "float",
+        "confidence": "float",
+	"binding_kinetics": {
+          "kon": "float",
+          "koff": "float",
+          "kd": "float"
+        },
+        "effect_type": "string",
+        "evidence_level": "string"
+      }
+    }
+  }
+}

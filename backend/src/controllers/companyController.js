@@ -31,6 +31,24 @@ function validateCompanyId(id) {
     }
 }
 
+/**
+ * @fileoverview Company Controller
+ * 
+ * Handles all company-related operations including:
+ * - CRUD operations for company profiles
+ * - Trial analysis management
+ * - Data enrichment processing
+ * 
+ * @database
+ * - MongoDB for company profiles
+ * - Redis for caching (planned)
+ * 
+ * @integration
+ * - Trial Analysis Service
+ * - Data Enrichment Pipeline
+ * - Authentication Service
+ */
+
 exports.createCompany = async (req, res) => {
     try {
         logger.info('Creating company:', req.body.companyName);

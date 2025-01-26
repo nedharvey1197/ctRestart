@@ -1,0 +1,92 @@
+{
+  "meta_schema": {
+    "version": "2.0",
+    "last_updated": "2025-01-22T11:00:00-07:00",
+    "version_control": {
+      "schema_versioning": {
+        "major_version": "integer",
+        "minor_version": "integer",
+        "patch_version": "integer",
+        "changelog": ["string"]
+      },
+      "compatibility_rules": {
+        "backward_compatible": "boolean",
+        "migration_required": "boolean"
+      }
+    },
+    "schema_registry": {
+      "baseline_layer": "BIL_v2",
+      "core_support_layer": {
+        "tst_schema": "TST_v2",
+        "ci_schema": "CI_v2",
+        "ds_schema": "DS_v2",
+        "ki_schema": "KI_v2",
+        "sg_schema": "SG_v2"
+      },
+      "extensions": {
+        "planet": "PLANET_v1",
+        "ctkg": "CTKG_v1",
+        "pytrial": "PYTRIAL_v1"
+      }
+    },
+    "validation_rules": {
+      "cross_schema": true,
+      "temporal_consistency": true,
+      "data_quality": true
+    },
+    "integration": {
+      "integration_points": {
+        "external_systems": ["string"],
+        "api_versions": ["string"],
+        "data_exchange_formats": ["string"]
+      },
+      "services": {
+        "data_exchange": {
+          "protocols": {
+            "real_time": {
+              "method": "string",
+              "format": "string",
+              "validation_rules": ["string"]
+            },
+            "batch": {
+              "frequency": "duration",
+              "format": "string",
+              "validation_rules": ["string"]
+            }
+          },
+          "transformation_rules": {
+            "data_mapping": {
+              "source_format": "string",
+              "target_format": "string",
+              "transformation_logic": "string"
+            },
+            "validation_steps": {
+              "pre_transform": ["string"],
+              "post_transform": ["string"]
+            }
+          }
+        },
+        "interfaces": {
+          "api_definitions": {
+            "endpoints": ["string"],
+            "authentication": "string",
+            "rate_limiting": {
+              "max_requests": "integer",
+              "time_window": "duration"
+            }
+          },
+          "error_handling": {
+            "retry_policy": {
+              "max_attempts": "integer",
+              "backoff_strategy": "string"
+            },
+            "failure_handling": {
+              "fallback_strategy": "string",
+              "notification_protocol": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "nodes": [
+    {
+      "id": "meta_schema_1",
+      "type": "MetaSchema",
+      "properties": {
+        "version": "2.0",
+        "last_updated": "2025-01-22T11:00:00-07:00"
+      }
+    },
+    {
+      "id": "version_control_1",
+      "type": "VersionControl",
+      "properties": {
+        "major_version": "integer",
+        "minor_version": "integer",
+        "patch_version": "integer",
+        "backward_compatible": "boolean",
+        "migration_required": "boolean"
+      }
+    },
+    {
+      "id": "schema_registry_1",
+      "type": "SchemaRegistry",
+      "properties": {
+        "baseline_layer": "BIL_v2",
+        "planet_version": "PLANET_v1",
+        "ctkg_version": "CTKG_v1",
+        "pytrial_version": "PYTRIAL_v1"
+      }
+    },
+    {
+      "id": "core_layer_1",
+      "type": "CoreSupportLayer",
+      "properties": {
+        "tst_schema": "TST_v2",
+        "ci_schema": "CI_v2",
+        "ds_schema": "DS_v2",
+        "ki_schema": "KI_v2",
+        "sg_schema": "SG_v2"
+      }
+    },
+    {
+      "id": "integration_1",
+      "type": "Integration",
+      "properties": {
+        "external_systems": ["string"],
+        "api_versions": ["string"],
+        "data_exchange_formats": ["string"]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "rel_1",
+      "type": "HAS_VERSION_CONTROL",
+      "start": "meta_schema_1",
+      "end": "version_control_1"
+    },
+    {
+      "id": "rel_2",
+      "type": "HAS_REGISTRY",
+      "start": "meta_schema_1",
+      "end": "schema_registry_1"
+    },
+    {
+      "id": "rel_3",
+      "type": "HAS_CORE_LAYER",
+      "start": "schema_registry_1",
+      "end": "core_layer_1"
+    },
+    {
+      "id": "rel_4",
+      "type": "HAS_INTEGRATION",
+      "start": "meta_schema_1",
+      "end": "integration_1"
+    }
+  ]
+}

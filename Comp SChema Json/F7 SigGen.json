@@ -1,0 +1,125 @@
+{
+  "node_labels": {
+    "RiskAlert": {
+      "properties": {
+        "id": "string",
+        "type": "string",
+        "severity": "string",
+        "urgency": "string",
+        "detection_time": "datetime",
+        "confidence": "float",
+        "resolution_status": "string"
+      },
+      "constraints": ["id"]
+    },
+    "OpportunityIndicator": {
+      "properties": {
+        "id": "string",
+        "type": "string",
+        "potential": "float",
+        "confidence": "float",
+        "detection_time": "datetime",
+        "validation_status": "string"
+      },
+      "constraints": ["id"]
+    },
+    "PerformanceDeviation": {
+      "properties": {
+        "id": "string",
+        "metric": "string",
+        "magnitude": "float",
+        "direction": "string",
+        "detection_time": "datetime",
+        "significance": "float"
+      },
+      "constraints": ["id"]
+    },
+    "TrendPattern": {
+      "properties": {
+        "id": "string",
+        "pattern_type": "string",
+        "direction": "string",
+        "strength": "float",
+        "temporal_span": "duration",
+        "reliability": "float",
+        "pattern_characteristics": {
+          "seasonality": "boolean",
+          "cyclicity": "float",
+          "trend_stability": "float"
+        },
+        "detection_parameters": {
+          "window_size": "duration",
+          "confidence_threshold": "float",
+          "minimum_observations": "integer"
+        },
+        "validation_metrics": {
+          "false_positive_rate": "float",
+          "sensitivity": "float",
+          "specificity": "float"
+        }
+      },
+      "constraints": ["id"]
+    },
+    "AnomalyDetection": {
+      "properties": {
+        "id": "string",
+        "type": "string",
+        "significance": "float",
+        "detection_time": "datetime",
+        "detection_algorithm": "string",
+        "baseline_parameters": {
+          "mean": "float",
+          "standard_deviation": "float",
+          "threshold_multiplier": "float"
+        },
+        "contextual_factors": ["string"],
+        "verification_status": "string",
+        "confidence": "float",
+        "validation_status": "string"
+      },
+      "constraints": ["id"]
+    }
+  },
+  "relationships": {
+    "PREDICTS_RISK": {
+      "source": ["TrendPattern", "AnomalyDetection"],
+      "target": ["RiskAlert"],
+      "properties": {
+        "confidence": "float",
+        "prediction_horizon": "duration",
+        "validation_status": "string",
+        "detection_method": "string",
+        "prediction_metrics": {
+          "accuracy": "float",
+          "precision": "float",
+          "recall": "float",
+          "f1_score": "float"
+        },
+        "temporal_aspects": {
+          "lead_time": "duration",
+          "prediction_window": "duration",
+          "update_frequency": "duration"
+        }
+      }
+    },
+    "CORRELATES_WITH": {
+      "source": ["PerformanceDeviation"],
+      "target": ["TrendPattern"],
+      "properties": {
+        "correlation_strength": "float",
+        "temporal_lag": "duration",
+        "causality_confidence": "float",
+        "validation_method": "string"
+      }
+    },
+    "GENERATES_ALERT": {
+      "source": ["AnomalyDetection", "PerformanceDeviation"],
+      "target": ["RiskAlert", "OpportunityIndicator"],
+      "properties": {
+        "confidence": "float",
+        "urgency": "string",
+        "validation_status": "string"
+      }
+    }
+  }
+}

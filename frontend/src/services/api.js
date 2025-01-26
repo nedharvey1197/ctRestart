@@ -4,7 +4,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'http://localhost:8000/api';
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
@@ -82,109 +82,58 @@ export const updateCompany = async (id, companyData) => {
 
 // Trial Analysis Operations
 /**
- * Saves trial analysis data for a company
- * @param {string} id - Company ID
- * @param {Object} data - Analysis results containing:
- *   - studies: Array of clinical trials
- *   - analytics: Object containing statistical analysis
- *   - rawData: Complete analysis results for persistence
- * @returns {Promise<Object>} Saved analysis data
+ * Save raw trials data for a company
  */
-export const saveTrialAnalysis = async (id, analysisResults) => {
-  // Deep inspection of analysis results
-  console.log('Full Analysis Package:', {
-    // Top level structure
-    topLevel: {
-      keys: Object.keys(analysisResults),
-      hasStudies: !!analysisResults.studies,
-      hasAnalytics: !!analysisResults.analytics
-    },
-    // Studies details
-    studies: {
-      count: analysisResults.studies?.length,
-      firstStudy: analysisResults.studies?.[0] ? {
-        id: analysisResults.studies[0].protocolSection?.identificationModule?.nctId,
-        hasProtocolSection: !!analysisResults.studies[0].protocolSection,
-        modules: Object.keys(analysisResults.studies[0].protocolSection || {})
-      } : null
-    },
-    // Analytics details
-    analytics: {
-      raw: analysisResults.analytics,
-      keys: Object.keys(analysisResults.analytics || {}),
-      phaseDistribution: analysisResults.analytics?.phaseDistribution,
-      statusSummary: analysisResults.analytics?.statusSummary,
-      therapeuticAreas: {
-        keys: Object.keys(analysisResults.analytics?.therapeuticAreas || {}),
-        sampleEntries: Object.entries(analysisResults.analytics?.therapeuticAreas || {}).slice(0, 3)
-      }
-    },
-    // Metadata
-    metadata: {
-      companyName: analysisResults.companyName,
-      queryDate: analysisResults.queryDate
+export const saveCompanyTrials = async (companyId, trials) => {
+    const url = `${API_BASE_URL}/companies/${companyId}/trials`;
+    
+    console.log('Saving trials:', {
+        url,
+        trialCount: trials.length,
+        sampleTrial: trials[0]?.protocolSection?.identificationModule?.nctId
+    });
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: defaultHeaders,
+            body: JSON.stringify({ trials })  // Wrap in object to match FastAPI expectation
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();  // Get raw error response
+            console.error('Server error:', {
+                status: response.status,
+                statusText: response.statusText,
+                error: errorText
+            });
+            throw new Error(`Failed to save trials: ${response.statusText}`);
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error('Failed to save company trials:', error);
+        throw error;
     }
-  });
+};
 
-  const url = `${API_BASE_URL}/companies/${id}/trials`;
-  
-  // Log the full payload structure
-  console.log('Trial Analysis Payload:', {
-    studies: {
-      count: analysisResults.studies?.length,
-      sampleStudy: analysisResults.studies?.[0]?.protocolSection?.identificationModule?.nctId
-    },
-    analytics: {
-      therapeuticAreas: {
-        count: Object.keys(analysisResults.analytics?.therapeuticAreas || {}).length,
-        sample: Object.entries(analysisResults.analytics?.therapeuticAreas || {}).slice(0, 2)
-      },
-      phaseDistribution: analysisResults.analytics?.phaseDistribution,
-      statusSummary: analysisResults.analytics?.statusSummary,
-      totalTrials: analysisResults.analytics?.totalTrials
-    },
-    metadata: {
-      companyName: analysisResults.companyName,
-      queryDate: analysisResults.queryDate
+/**
+ * Save analysis results for a company
+ */
+export const saveTrialAnalysis = async (companyId, analysisData) => {
+    const response = await fetch(`${API_BASE_URL}/api/companies/${companyId}/analysis`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(analysisData)
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to save analysis');
     }
-  });
 
-  console.log('Attempting API call to:', {
-    url,
-    method: 'POST',
-    headers: defaultHeaders,
-    dataSize: JSON.stringify(analysisResults).length,
-    analyticsKeys: Object.keys(analysisResults.analytics || {})
-  });
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: defaultHeaders,
-      body: JSON.stringify(analysisResults)
-    });
-
-    console.log('Raw API response:', {
-      status: response.status,
-      ok: response.ok,
-      statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries())
-    });
-
-    const result = await response.json();
-    console.log('API saveTrialAnalysis response:', {
-      success: response.ok,
-      savedAnalytics: !!result.data?.trialAnalytics
-    });
-    return result;
-  } catch (error) {
-    console.error('API call failed:', {
-      error: error.message,
-      type: error.name,
-      url
-    });
-    throw error;
-  }
+    return response.json();
 };
 
 // Get the most recently created company

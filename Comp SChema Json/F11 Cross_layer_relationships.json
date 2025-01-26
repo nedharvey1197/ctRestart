@@ -1,0 +1,29 @@
+{
+  "cross_schema_relationships": {
+    "INFLUENCES_OUTCOME": {
+      "source": ["PopulationBiomarker", "MolecularTarget"],
+      "target": ["OutcomeMeasure"],
+      "properties": {
+        "effect_size": "float",
+        "mechanism": "string",
+        "temporal_pattern": "string",
+        "confounding_factors": ["string"],
+        "evidence_quality": {
+          "strength": "float",
+          "consistency": "float",
+          "directness": "float"
+        }
+      }
+    },
+    "CONTRIBUTES_TO_SIGNAL": {
+      "source": ["OutcomeAnalysis", "PerformanceMetric"],
+      "target": ["TrendPattern", "AnomalyDetection"],
+      "properties": {
+        "contribution_weight": "float",
+        "temporal_relevance": "float",
+        "confidence": "float",
+        "validation_method": "string"
+      }
+    }
+  }
+}

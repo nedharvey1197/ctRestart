@@ -1,0 +1,171 @@
+/**
+ * ComprehensiveTrialAnalyzer
+ * 
+ * Purpose: Queries ClinicalTrials.gov API v2 to retrieve and analyze all clinical trials
+ * associated with a specified company, including both registered and pre-registration trials.
+ * 
+ * Core Functions:
+ * - Executes comprehensive API queries
+ * - Processes and structures trial data
+ * - Generates analytics
+ * - Creates standardized JSON output
+ */
+public class ComprehensiveTrialAnalyzer {
+    /** Base URL for ClinicalTrials.gov API v2 */
+    private static final String BASE_URL = "https://clinicaltrials.gov/api/v2/studies";
+
+    /** Complete set of required data modules from ClinicalTrials.gov */
+    private final Set<String> REQUIRED_MODULES = Set.of(
+        "IdentificationModule", "StatusModule", "SponsorCollaboratorsModule",
+        "OversightModule", "DescriptionModule", "ConditionsModule", 
+        "DesignModule", "ArmsInterventionsModule", "OutcomesModule",
+        "EligibilityModule", "ContactsLocationsModule", "ReferencesModule",
+        "IPDSharingStatementModule", "ParticipantFlowModule",
+        "BaselineCharacteristicsModule", "OutcomeMeasuresModule",
+        "AdverseEventsModule"
+    );
+
+    private final HttpClient client;
+    private final ObjectMapper mapper;
+    private final String companyName;
+    private final Set<String> drugIdentifiers = new HashSet<>();
+
+    public ComprehensiveTrialAnalyzer(String companyName) {
+        this.companyName = normalizeCompanyName(companyName);
+        this.client = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(30))
+            .build();
+        this.mapper = new ObjectMapper()
+            .enable(SerializationFeature.INDENT_OUTPUT);
+    }
+
+    /**
+     * Normalizes company name for consistent searching
+     */
+    private String normalizeCompanyName(String name) {
+        return name.toLowerCase()
+            .replaceAll("\\b(inc|corp|ltd|llc|pharmaceuticals|pharma)\\b", "")
+            .trim();
+    }
+
+    /**
+     * Builds the initial query URL for registered trials
+     */
+    private String buildRegisteredTrialsQuery() {
+        return String.format("%s?query.term=%s&fields=%s&pageSize=100",
+            BASE_URL,
+            URLEncoder.encode(companyName, StandardCharsets.UTF_8),
+            String.join(",", REQUIRED_MODULES));
+    }
+
+    /**
+     * Executes HTTP request to ClinicalTrials.gov API
+     */
+    private StudyResponse executeQuery(String queryUrl) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(queryUrl))
+            .header("Accept", "application/json")
+            .GET()
+            .build();
+
+        HttpResponse<String> response = client.send(request, 
+            HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("API request failed: " + response.statusCode());
+        }
+
+        return mapper.readValue(response.body(), StudyResponse.class);
+    }
+
+    /**
+     * Extracts drug identifiers from study data
+     */
+    private Set<String> extractDrugIdentifiers(StudyResponse response) {
+        Set<String> identifiers = new HashSet<>();
+        for (Study study : response.getStudies()) {
+            if (study.getProtocolSection().getArmsInterventionsModule() != null) {
+                for (Intervention intervention : 
+                    study.getProtocolSection().getArmsInterventionsModule().getInterventions()) {
+                    if (intervention.getName() != null) {
+                        identifiers.add(extractDrugCode(intervention.getName()));
+                    }
+                }
+            }
+        }
+        return identifiers;
+    }
+
+    /**
+     * Finds pre-registration trials using drug identifiers
+     */
+    private List<Study> findPreRegistrationTrials(Set<String> drugCodes) throws Exception {
+        List<Study> preRegTrials = new ArrayList<>();
+        for (String drugCode : drugCodes) {
+            String query = buildDrugQuery(drugCode);
+            StudyResponse response = executeQuery(query);
+            preRegTrials.addAll(filterRelevantTrials(response.getStudies()));
+        }
+        return preRegTrials;
+    }
+
+    /**
+     * Filters trials for relevance to company
+     */
+    private List<Study> filterRelevantTrials(List<Study> studies) {
+        return studies.stream()
+            .filter(this::isCompanyRelated)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Checks if a study is related to the company
+     */
+    private boolean isCompanyRelated(Study study) {
+        if (study.getProtocolSection() == null) return false;
+        
+        // Check sponsor
+        if (study.getProtocolSection().getSponsorCollaboratorsModule() != null) {
+            String sponsor = study.getProtocolSection()
+                .getSponsorCollaboratorsModule()
+                .getLeadSponsor().getName();
+            if (isNameMatch(sponsor)) return true;
+        }
+        
+        // Check description
+        if (study.getProtocolSection().getDescriptionModule() != null) {
+            String description = study.getProtocolSection()
+                .getDescriptionModule()
+                .getBriefSummary();
+            if (isNameMatch(description)) return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Main analysis method
+     */
+    public CompanyTrialData analyzeCompanyTrials(String outputPath) {
+        try {
+            StudyResponse registeredTrials = executeQuery(buildRegisteredTrialsQuery());
+            Set<String> drugCodes = extractDrugIdentifiers(registeredTrials);
+            List<Study> allTrials = new ArrayList<>(registeredTrials.getStudies());
+            allTrials.addAll(findPreRegistrationTrials(drugCodes));
+            
+            CompanyTrialData companyData = new CompanyTrialData(
+                companyName,
+                LocalDate.now(),
+                allTrials,
+                generateAnalytics(allTrials)
+            );
+            
+            saveToJson(companyData, outputPath);
+            return companyData;
+        } catch (Exception e) {
+            throw new RuntimeException("Analysis failed: " + e.getMessage());
+        }
+    }
+
+    // Data classes remain the same as in original code
+}

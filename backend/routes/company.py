@@ -1,0 +1,6 @@
+ # ... existing code ...
+@router.get("/companies/current")
+async def get_current_company():
+    # Add your company fetching logic here
+    return {"message": "Current company details"}
+# ... existing code ...

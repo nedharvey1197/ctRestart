@@ -1,0 +1,85 @@
+{
+  "node_labels": {
+    "TrialStatus": {
+      "properties": {
+        "id": "string",
+        "status_type": "string",
+        "timestamp": "datetime",
+        "active": "boolean",
+        "confidence": "float"
+      },
+      "constraints": ["id"]
+    },
+    "Milestone": {
+      "properties": {
+        "id": "string",
+        "name": "string",
+        "target_date": "datetime",
+        "actual_date": "datetime",
+        "status": "string",
+        "criticality": "string"
+      },
+      "constraints": ["id"]
+    },
+    "PerformanceMetric": {
+      "properties": {
+        "id": "string",
+        "metric_type": "string",
+        "value": "float",
+        "timestamp": "datetime",
+        "confidence": "float"
+      },
+      "constraints": ["id"]
+    },
+    "RiskIndicator": {
+      "properties": {
+        "id": "string",
+        "risk_type": "string",
+        "severity": "string",
+        "probability": "float",
+        "detection_time": "datetime"
+      },
+      "constraints": ["id"]
+    },
+    "ResourceUtilization": {
+      "properties": {
+        "id": "string",
+        "resource_type": "string",
+        "quantity": "float",
+        "allocation": "string",
+        "efficiency": "float"
+      },
+      "constraints": ["id"]
+    }
+  },
+  "relationships": {
+    "TRANSITIONS_TO": {
+      "source": ["TrialStatus"],
+      "target": ["TrialStatus"],
+      "properties": {
+        "timestamp": "datetime",
+        "reason": "string",
+        "confidence": "float"
+      },
+      "constraints": ["temporal_sequence"]
+    },
+    "DEPENDS_ON": {
+      "source": ["Milestone"],
+      "target": ["Milestone"],
+      "properties": {
+        "dependency_type": "string",
+        "lag_time": "duration",
+        "criticality": "string"
+      }
+    },
+    "INFLUENCES_PERFORMANCE": {
+      "source": ["ResourceUtilization"],
+      "target": ["PerformanceMetric"],
+      "properties": {
+        "impact_type": "string",
+        "magnitude": "float",
+        "confidence": "float"
+      }
+    }
+  }
+}

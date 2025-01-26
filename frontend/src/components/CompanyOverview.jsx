@@ -1,3 +1,23 @@
+/**
+ * @fileoverview Company Overview Dashboard Component
+ * 
+ * Primary dashboard component that displays comprehensive company trial data including:
+ * - Basic company information
+ * - Trial analytics visualizations
+ * - Therapeutic area breakdowns
+ * - Phase distribution charts
+ * 
+ * @integration
+ * - Connects to ComprehensiveTrialAnalyzer for data processing
+ * - Uses API service for data fetching
+ * - Integrates with MUI components for UI
+ * 
+ * @flow
+ * 1. Loads company data on mount
+ * 2. Automatically triggers analysis if data is stale
+ * 3. Updates visualizations with processed data
+ */
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as api from '../services/api';

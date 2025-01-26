@@ -1,0 +1,98 @@
+{
+  "node_labels": {
+    "OutcomeDefinition": {
+      "properties": {
+        "id": "string",
+        "type": "string",
+        "domain": "string",
+        "measurement_unit": "string",
+        "validation_status": "string",
+        "standardized_code": "string"
+      },
+      "constraints": ["id"]
+    },
+    "OutcomeMeasure": {
+      "properties": {
+        "id": "string",
+        "timepoint": "datetime",
+        "value": "float",
+        "confidence": "float",
+        "analysis_period": "duration",
+        "measurement_method": "string"
+      },
+      "constraints": ["id"]
+    },
+    "OutcomeAnalysis": {
+      "properties": {
+        "id": "string",
+        "statistical_method": "string",
+        "results": "string",
+        "significance": "float",
+	"statistical_power": "float",
+        "effect_size": {
+          "value": "float",
+          "type": "string",
+          "confidence_interval": {
+            "lower": "float",
+            "upper": "float"
+          }
+        },
+  	"covariates": ["string"],
+        "adjustment_methods": ["string"],
+        "validation_status": "string",
+        "analysis_date": "datetime"
+      },
+      "constraints": ["id"]
+    },
+    "OutcomeEvidence": {
+      "properties": {
+        "id": "string",
+        "evidence_type": "string",
+        "strength": "float",
+        "source": "string",
+        "validation_date": "datetime"
+      },
+      "constraints": ["id"]
+    }
+  },
+  "relationships": {
+    "MEASURES_OUTCOME": {
+      "source": ["OutcomeMeasure"],
+      "target": ["OutcomeDefinition"],
+      "properties": {
+        "confidence": "float",
+        "significance": "float",
+        "timestamp": "datetime",
+        "quality_score": "float"
+      },
+      "temporal_properties": {
+        "measurement_window": "duration",
+        "follow_up_period": "duration",
+        "assessment_frequency": "duration"
+      },
+      "quality_metrics": {
+        "data_completeness": "float",
+        "measurement_precision": "float",
+        "bias_assessment": "string"
+      }
+    },
+    "ANALYZES_OUTCOME": {
+      "source": ["OutcomeAnalysis"],
+      "target": ["OutcomeMeasure"],
+      "properties": {
+        "method": "string",
+        "confidence": "float",
+        "validation_status": "string"
+      }
+    },
+    "SUPPORTS_OUTCOME": {
+      "source": ["OutcomeEvidence"],
+      "target": ["OutcomeAnalysis"],
+      "properties": {
+        "strength": "float",
+        "relevance": "float",
+        "temporal_context": "datetime"
+      }
+    }
+  }
+}

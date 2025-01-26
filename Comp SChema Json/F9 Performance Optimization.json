@@ -1,0 +1,82 @@
+{
+  "indexes": {
+    "temporal_indexes": {
+      "TrialStatus": ["timestamp"],
+      "OutcomeMeasure": ["timepoint"],
+      "RiskAlert": ["detection_time"],
+      "PerformanceMetric": ["timestamp"],
+      "Milestone": ["target_date", "actual_date"]
+    },
+    "search_indexes": {
+      "Study": ["name", "status"],
+      "Condition": ["name", "icd_code"],
+      "MolecularTarget": ["pathway", "mechanism"],
+      "PopulationBiomarker": ["type", "significance"]
+    },
+    "composite_indexes": {
+      "outcome_analysis": {
+        "OutcomeAnalysis": ["statistical_method", "significance"],
+        "OutcomeMeasure": ["type", "timepoint"]
+      },
+      "risk_monitoring": {
+        "RiskAlert": ["type", "severity", "urgency"],
+        "TrendPattern": ["pattern_type", "strength"]
+      },
+      "performance_tracking": {
+        "PerformanceMetric": ["metric_type", "timestamp"],
+        "PerformanceDeviation": ["magnitude", "significance"]
+      }
+    }
+  },
+  "performance_optimization": {
+    "query_patterns": {
+      "frequent_access_patterns": {
+        "pattern_definition": "string",
+        "caching_strategy": "string",
+        "refresh_interval": "duration"
+      },
+      "complex_analytics": {
+        "computation_strategy": "string",
+        "materialized_views": ["string"],
+        "partition_strategy": "string"
+      }
+    },
+    "index_optimization": {
+      "composite_indexes": {
+        "performance_critical": ["string"],
+        "search_optimization": ["string"],
+        "relationship_traversal": ["string"]
+      },
+      "dynamic_indexing": {
+        "usage_monitoring": "boolean",
+        "auto_optimization": "boolean",
+        "maintenance_window": "duration"
+      }
+    }
+  },
+  "query_optimization": {
+    "caching_rules": {
+      "frequently_accessed": {
+        "nodes": ["TrialStatus", "RiskAlert", "PerformanceMetric"],
+        "cache_duration": "1h",
+        "refresh_strategy": "incremental"
+      },
+      "computation_heavy": {
+        "patterns": ["TrendAnalysis", "OutcomeAnalysis"],
+        "cache_duration": "24h",
+        "refresh_strategy": "full"
+      }
+    },
+    "partitioning_strategy": {
+      "temporal_partitioning": {
+        "enabled": true,
+        "interval": "monthly",
+        "nodes": ["TrialStatus", "OutcomeMeasure", "PerformanceMetric"]
+      },
+      "domain_partitioning": {
+        "enabled": true,
+        "criteria": ["study_phase", "therapeutic_area"]
+      }
+    }
+  }
+}

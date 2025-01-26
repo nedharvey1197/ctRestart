@@ -1,0 +1,8 @@
+{
+  "entryPoints": ["src/types/trialAnalyzer.ts"],
+  "out": "docs",
+  "name": "Clinical Trial Analyzer Documentation",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "theme": "default"
+} 

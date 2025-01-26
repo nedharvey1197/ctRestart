@@ -1,18 +1,25 @@
-import { handleResponse } from './api';
+import { saveTrialAnalysis } from './api';
 import { trialAnalyzerConfig } from '../config/trialAnalyzer.config';
 import { TrialAnalysisError } from '../utils/errorHandler';
 
 /**
- * ComprehensiveTrialAnalyzer
+ * @fileoverview Comprehensive Trial Analysis Engine
  * 
- * Purpose: Queries ClinicalTrials.gov API v2 to retrieve and analyze all clinical trials
- * associated with a specified company, including both registered and pre-registration trials.
+ * Core analysis service that processes clinical trial data from multiple sources:
+ * - ClinicalTrials.gov API data
+ * - Enriched company data
+ * - Manual therapeutic area classifications
  * 
- * Core Functions:
- * - Executes comprehensive API queries
- * - Processes and structures trial data
- * - Generates analytics
- * - Creates standardized JSON output
+ * @architecture
+ * - Singleton service pattern
+ * - Implements caching for API responses
+ * - Provides data normalization and analysis
+ * 
+ * @dataFlow
+ * 1. Fetches raw trial data
+ * 2. Normalizes and enriches data
+ * 3. Generates analytics
+ * 4. Caches results
  */
 class ComprehensiveTrialAnalyzer {
   constructor() {
@@ -180,6 +187,7 @@ class ComprehensiveTrialAnalyzer {
     
     const match = interventionText.match(drugCodePattern);
     if (match) {
+        console.log('Extracted drug code:', match[0]);
         return match[0];
     }
     
@@ -191,6 +199,11 @@ class ComprehensiveTrialAnalyzer {
    */
   extractDrugIdentifiers(studyData) {
     const identifiers = new Set();
+    
+    console.log('Extracting drug identifiers from study data:', {
+        hasStudies: !!studyData.studies,
+        studiesCount: studyData.studies?.length || 0
+    });
     
     if (!studyData.studies) return identifiers;
     
@@ -328,6 +341,10 @@ class ComprehensiveTrialAnalyzer {
    * Checks if a name matches the company name
    */
   isNameMatch(text) {
+    console.log('Checking if name matches:', {
+      text: text,
+      companyName: this.companyNameNormalized
+    });
     if (!text) return false;
     const normalizedText = this.normalizeCompanyName(text);
     return normalizedText.includes(this.companyNameNormalized);
@@ -338,10 +355,16 @@ class ComprehensiveTrialAnalyzer {
    */
   async analyzeCompanyTrials(companyName) {
     try {
+      console.log('Analyzing company trials:', {
+        companyName: companyName
+      });
       const normalizedName = this.normalizeCompanyName(companyName);
       this.companyNameNormalized = normalizedName;
       
       // Get trials data
+      console.log('Building registered trials query and executiong the query', {
+        query: this.buildRegisteredTrialsQuery(normalizedName)
+      });   
       const registeredTrials = await this.executeQuery(
         this.buildRegisteredTrialsQuery(normalizedName)
       );
@@ -349,9 +372,12 @@ class ComprehensiveTrialAnalyzer {
       const allTrials = registeredTrials.studies;
       
       // Generate complete analytics
+      console.log('Generating analytics for registered trials', {
+        totalTrials: allTrials.length
+      });
       const analytics = this.generateAnalytics(allTrials);
       
-      console.log('Analysis complete:', {
+      console.log('Registerd TrialAnalysis complete:', {
         studiesCount: allTrials.length,
         analyticsGenerated: {
           hasPhaseData: !!analytics.phaseDistribution,
@@ -361,12 +387,24 @@ class ComprehensiveTrialAnalyzer {
         }
       });
 
-    return {
-      studies: allTrials,
-      analytics,
-      companyName: normalizedName,
-      queryDate: new Date().toISOString()
-    };
+      // This creates the initial analysis package
+      const fullAnalysisPackage = {
+          analytics: {
+              phaseDistribution: analytics.phaseDistribution,
+              statusSummary: analytics.statusSummary,
+              therapeuticAreas: analytics.therapeuticAreas,
+              totalTrials: allTrials.length
+          },
+          studies: allTrials,
+          metadata: {
+              companyName: normalizedName,
+              queryDate: new Date().toISOString()
+          }
+      };
+
+      console.log('Full Analysis Package:', fullAnalysisPackage);
+
+    return fullAnalysisPackage;
     } catch (error) {
       console.error('Analysis failed:', error);
       throw error;
@@ -589,10 +627,11 @@ class ComprehensiveTrialAnalyzer {
 
   async saveAnalysisResults(companyName, results) {
     try {
-      await api.saveTrialAnalysis(companyName, results);
-      return true;
+        await saveTrialAnalysis(companyName, results);  // Use imported function
+        return true;
     } catch (error) {
-      throw new Error('Failed to save analysis results');
+        console.error('Failed to save analysis results:', error);
+        throw new Error('Failed to save analysis results');
     }
   }
 
@@ -622,6 +661,12 @@ class ComprehensiveTrialAnalyzer {
         const value = path.split('.').reduce((obj, key) => obj?.[key], study);
         return value !== undefined;
     });
+  }
+
+  async resetForNewCompany() {
+    this.cache.clear();
+    this.drugIdentifiers.clear();
+    // Reset other state...
   }
 }
 

@@ -1,0 +1,120 @@
+{
+  "node_labels": {
+    "StrategicDecisionPoint": {
+      "properties": {
+        "id": "string",
+        "type": "string",
+	"decision_context": {
+          "business_impact": "float",
+          "regulatory_impact": "float",
+          "scientific_impact": "float"
+        },
+        "stakeholder_requirements": {
+          "approval_levels": ["string"],
+          "consultation_required": ["string"],
+          "documentation_needs": ["string"]
+        },
+        "decision_window": {
+          "optimal_time": "datetime",
+          "deadline": "datetime",
+          "flexibility": "duration"
+        },
+        "urgency": "string",
+        "reversibility": "boolean",
+        "impact_level": "string",
+        "confidence_required": "float"
+      },
+      "constraints": ["id"]
+    },
+    "OperationalDecisionPoint": {
+      "properties": {
+        "id": "string",
+        "type": "string",
+	"implementation_details": {
+          "resource_requirements": ["string"],
+          "dependencies": ["string"],
+          "rollback_plan": "string"
+        },
+        "validation_criteria": {
+          "quality_gates": ["string"],
+          "acceptance_criteria": ["string"],
+          "verification_methods": ["string"]
+        },
+        "urgency": "string",
+        "reversibility": "boolean",
+        "parent_strategic_decision": "string",
+        "implementation_window": "duration"
+      },
+      "constraints": ["id"]
+    },
+    "RiskThreshold": {
+      "properties": {
+        "id": "string",
+        "metric": "string",
+        "value": "float",
+        "tolerance": "float",
+        "review_frequency": "duration"
+      },
+      "constraints": ["id"]
+    },
+    "SuccessCriteria": {
+      "properties": {
+        "id": "string",
+        "definition": "string",
+        "measurement": "string",
+        "threshold": "float",
+        "confidence_level": "float"
+      },
+      "constraints": ["id"]
+    },
+    "ImpactAssessment": {
+      "properties": {
+        "id": "string",
+        "scope": "string",
+        "magnitude": "float",
+        "confidence": "float",
+        "temporal_span": "duration"
+      },
+      "constraints": ["id"]
+    }
+  },
+  "relationships": {
+    "INFLUENCES_DECISION": {
+      "source": ["RiskThreshold", "SuccessCriteria"],
+      "target": ["StrategicDecisionPoint", "OperationalDecisionPoint"],
+      "properties": {
+ 	"evidence_chain": {
+          "direct_evidence": "float",
+          "indirect_evidence": "float",
+          "evidence_quality": "string"
+        },
+        "impact_assessment": {
+          "probability": "float",
+          "severity": "string",
+          "reversibility": "boolean"
+        },
+        "weight": "float",
+        "confidence": "float",
+        "temporal_validity": "datetime"
+      }
+    },
+    "REQUIRES_ACTION": {
+      "source": ["StrategicDecisionPoint"],
+      "target": ["OperationalDecisionPoint"],
+      "properties": {
+        "urgency": "string",
+        "dependency_type": "string",
+        "sequence_order": "integer"
+      }
+    },
+    "HAS_IMPACT": {
+      "source": ["StrategicDecisionPoint", "OperationalDecisionPoint"],
+      "target": ["ImpactAssessment"],
+      "properties": {
+        "probability": "float",
+        "confidence": "float",
+        "validation_status": "string"
+      }
+    }
+  }
+}

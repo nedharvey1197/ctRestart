@@ -1,0 +1,132 @@
+{
+  "node_labels": {
+    "InternalContext": {
+      "PatientRecord": {
+        "properties": {
+          "id": "string",
+          "demographics": "string",
+          "history": "string",
+          "last_updated": "datetime"
+        },
+        "constraints": ["id"]
+      },
+      "SitePerformance": {
+        "properties": {
+          "id": "string",
+          "metrics": "string",
+          "trends": "string",
+          "evaluation_date": "datetime"
+        },
+        "constraints": ["id"]
+      },
+      "SafetySignal": {
+        "properties": {
+          "id": "string",
+          "type": "string",
+          "severity": "string",
+          "detection_time": "datetime",
+          "confidence": "float"
+        },
+        "constraints": ["id"]
+      },
+      "ResourceAllocation": {
+        "properties": {
+          "id": "string",
+          "type": "string",
+          "quantity": "float",
+          "allocation_date": "datetime"
+        },
+        "constraints": ["id"]
+      }
+    },
+    "ExternalContext": {
+      "StandardOfCare": {
+        "properties": {
+          "id": "string",
+          "practice_type": "string",
+          "evidence_level": "string",
+          "adoption_rate": "float",
+          "last_updated": "datetime",
+          "evolution_trend": "string"
+        },
+        "constraints": ["id"]
+      },
+      "MarketDynamics": {
+        "properties": {
+          "id": "string",
+          "factor_type": "string",
+          "impact_level": "float",
+          "trend_direction": "string",
+          "prediction_confidence": "float",
+          "temporal_validity": "datetime"
+        },
+        "constraints": ["id"]
+      },
+      "CompetitorTrial": {
+        "properties": {
+          "id": "string",
+          "status": "string",
+          "relevance": "float",
+          "last_updated": "datetime"
+        },
+        "constraints": ["id"]
+      },
+      "RegulatoryUpdate": {
+        "properties": {
+          "id": "string",
+          "region": "string",
+          "impact": "string",
+          "effective_date": "datetime"
+        },
+        "constraints": ["id"]
+      }
+    }
+  },
+  "relationships": {
+    "INFLUENCES_PERFORMANCE": {
+      "source": ["ResourceAllocation"],
+      "target": ["SitePerformance"],
+      "properties": {
+        "impact_type": "string",
+        "magnitude": "float",
+        "temporal_validity": "datetime"
+      }
+    },
+    "GENERATES_SIGNAL": {
+      "source": ["PatientRecord", "SitePerformance"],
+      "target": ["SafetySignal"],
+      "properties": {
+        "confidence": "float",
+        "detection_method": "string",
+        "timestamp": "datetime"
+      }
+    },
+    "IMPACTS_STANDARD": {
+      "source": ["MarketDynamics", "CompetitorTrial"],
+      "target": ["StandardOfCare"],
+      "properties": {
+        "impact_level": "float",
+        "confidence": "float",
+        "temporal_validity": "datetime"
+      }
+    },
+    "AFFECTS_MARKET": {
+      "source": ["RegulatoryUpdate"],
+      "target": ["MarketDynamics"],
+      "properties": {
+        "effect_type": "string",
+        "magnitude": "float",
+        "effective_date": "datetime"
+      }
+    },
+    "INFLUENCES_RESOURCE": {
+      "source": ["SitePerformance", "MarketDynamics"],
+      "target": ["ResourceAllocation"],
+      "properties": {
+        "impact_type": "string",
+        "confidence": "float",
+         "timestamp": "datetime"
+      }
+    }
+  }
+}

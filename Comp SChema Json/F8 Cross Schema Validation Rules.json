@@ -1,0 +1,65 @@
+{
+  "validation_rules": {
+    "molecular_data_quality": {
+      "completeness_threshold": 0.95,
+      "confidence_minimum": 0.8,
+      "update_frequency": "24h",
+      "validation_rules": {
+        "binding_affinity": {
+          "range": [0.0, 1.0],
+          "precision": 4,
+          "required": true
+        },
+        "pathway_validation": {
+          "format": "standardized_notation",
+          "vocabulary": "approved_pathways",
+          "required": true
+        }
+      }
+    },
+    "temporal_consistency": {
+      "maximum_lag": "48h",
+      "sequence_validation": {
+        "basic_rules": {
+          "status_transitions": "previous.time < current.time",
+          "outcome_sequence": "measurement.time <= analysis.time",
+          "signal_detection": "pattern.time < alert.time"
+        },
+        "milestone_dependencies": {
+          "rule": "ALL predecessor_milestones MUST BE completed",
+          "grace_period": "duration",
+          "exception_handling": "string"
+        },
+        "outcome_measurement": {
+          "rule": "measurement_time BETWEEN study_start AND study_end",
+          "allowable_deviation": "duration",
+          "missing_data_handling": "string"
+        }
+      },
+      "temporal_patterns": {
+        "trend_analysis": {
+          "minimum_interval": "duration",
+          "maximum_gap": "duration",
+          "seasonality_period": "duration"
+        },
+        "signal_propagation": {
+          "maximum_delay": "duration",
+          "causal_chain_validation": "boolean",
+          "temporal_clustering": "boolean"
+        }
+      }
+    },
+    "cross_layer_integrity": {
+      "bil_to_tst": {
+        "rule": "all_studies_must_have_status",
+        "validation": "MATCH (s:Study) WHERE NOT EXISTS((s)-[:HAS_STATUS]->(:TrialStatus)) RETURN s",
+        "enforcement": "strict"
+      },
+      "tst_to_sg": {
+        "rule": "performance_deviations_require_alerts",
+        "validation": "MATCH (d:PerformanceDeviation) WHERE d.magnitude > threshold AND NOT EXISTS((d)-[:GENERATES]->(:RiskAlert)) RETURN d",
+        "enforcement": "warning"
+      }
+    }
+  }
+}
